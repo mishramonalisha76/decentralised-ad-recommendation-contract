@@ -10,6 +10,7 @@ const abi = require("./DeAdsMain.js")
 const contractAddress = "0x6dad23e530Cc360B1Fad95a6f592858C367404B3"
 const contract = new ethers.Contract(contractAddress, abi, provider)
 const signingContract = contract.connect(wallet)
+const ipfsHelper = require("./ipfsHelper")
 //const gasOptions = {  gasPrice: 10000000000, gasLimit: 8500000 };
 
 
@@ -37,7 +38,8 @@ const getTags = async () => {
 
 const sendRecommendation = async (tag, ad, correlationScore) => {
     //needs to be filed manually
-
+    const ipfsHash = await ipfsHelper(ad);
+    console.log(ipfsHash)
     const trxObject = signingContract.setUserRecommendation(tag, ad, correlationScore)
     await trxObject
         .then(async function (tx) {
@@ -72,3 +74,5 @@ const sendRecommendation = async (tag, ad, correlationScore) => {
     
     
 })()
+
+ipfsHelper("abcd")
